@@ -1,9 +1,44 @@
+import { ReactNode } from "react";
+import {
+  FieldValues,
+  FormProvider,
+  Resolver,
+  SubmitHandler,
+  useForm,
+} from "react-hook-form";
+type TFormConfig = {
+  resolver?: Resolver<FieldValues>;
+  defaultValues?: Record<string, any>;
+};
 
-const BBForm = () => {
+type TFormProps = {
+  children: ReactNode;
+  onSubmit: SubmitHandler<FieldValues>;
+} & TFormConfig;
+const BBForm = ({
+  children,
+  onSubmit,
+  resolver,
+  defaultValues,
+}: TFormProps) => {
+  const formConfig: TFormConfig = {};
+  if (resolver) {
+    formConfig["resolver"] = resolver;
+  }
+  if (defaultValues) {
+    formConfig["defaultValues"] = defaultValues;
+  }
+
+  const methods = useForm(formConfig);
+  const { handleSubmit,reset } = methods;
+  const submit: SubmitHandler<FieldValues> = (data) => {
+    onSubmit(data);
+    reset()
+  };
   return (
-    <div>
-      <h1>This is BBForm component</h1>
-        </div>
+    <FormProvider {...methods}>
+      <form onSubmit={handleSubmit(submit)}>{children}</form>
+    </FormProvider>
   );
 };
 
