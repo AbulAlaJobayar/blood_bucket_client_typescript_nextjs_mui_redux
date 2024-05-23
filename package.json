@@ -12,14 +12,20 @@
     "@emotion/cache": "^11.11.0",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
+    "@hookform/resolvers": "^3.4.2",
     "@mui/icons-material": "^5.15.18",
     "@mui/material": "^5.15.18",
     "@mui/material-nextjs": "^5.15.11",
+    "@mui/x-date-pickers": "^7.5.0",
+    "dayjs": "^1.11.11",
     "next": "14.2.3",
+    "next-auth": "^4.24.7",
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.51.5",
-    "sonner": "^1.4.41"
+    "sharp": "^0.33.4",
+    "sonner": "^1.4.41",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/node": "^20",

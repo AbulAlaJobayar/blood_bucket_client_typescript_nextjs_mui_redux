@@ -17,7 +17,7 @@ import Link from "next/link";
 import Image from "next/image";
 import logo from "@/assets/logo/brandLogo.png";
 
-const pages = ["Products", "Pricing", "Blog"];
+const pages = ["Home", "About", "Search Donors", "Add Blood Request"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 const Navbar = () => {
   const [nav, setNav] = React.useState<null | HTMLElement>(null);
@@ -39,8 +39,8 @@ const Navbar = () => {
   };
 
   return (
-    <AppBar position="static">
-      <Container maxWidth="xl">
+    <AppBar position="sticky" >
+      <Container>
         <Toolbar disableGutters>
           <Box
             sx={{
@@ -72,7 +72,7 @@ const Navbar = () => {
                 vertical: "bottom",
                 horizontal: "left",
               }}
-              keepMounted
+              // keepMounted
               transformOrigin={{
                 vertical: "top",
                 horizontal: "left",

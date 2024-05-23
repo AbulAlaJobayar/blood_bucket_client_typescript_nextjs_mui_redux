@@ -1,3 +1,4 @@
+"use client";
 import { ReactNode } from "react";
 import {
   FieldValues,
@@ -10,11 +11,11 @@ type TFormConfig = {
   resolver?: Resolver<FieldValues>;
   defaultValues?: Record<string, any>;
 };
-
 type TFormProps = {
   children: ReactNode;
   onSubmit: SubmitHandler<FieldValues>;
 } & TFormConfig;
+
 const BBForm = ({
   children,
   onSubmit,
@@ -30,10 +31,11 @@ const BBForm = ({
   }
 
   const methods = useForm(formConfig);
-  const { handleSubmit,reset } = methods;
+  const { handleSubmit, reset } = methods;
   const submit: SubmitHandler<FieldValues> = (data) => {
+    console.log(data);
     onSubmit(data);
-    reset()
+    reset();
   };
   return (
     <FormProvider {...methods}>
