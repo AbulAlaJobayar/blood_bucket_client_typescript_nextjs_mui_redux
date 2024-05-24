@@ -2,31 +2,23 @@
 
 import BBForm from "@/components/Form/BBForm";
 import BBInput from "@/components/Form/BBInput";
-import {
-  Box,
-  Button,
-  Container,
-  Grid,
-  Stack,
-
-  Typography,
-} from "@mui/material";
+import { Box, Button, Container, Grid, Stack, Typography } from "@mui/material";
 import Link from "next/link";
 import { FieldValues } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn } from "next-auth/react";
-import GitHubIcon from '@mui/icons-material/GitHub';
-import GoogleIcon from '@mui/icons-material/Google';
+import GitHubIcon from "@mui/icons-material/GitHub";
+import GoogleIcon from "@mui/icons-material/Google";
 
-export const validationSchema = z.object({
+ const validationSchema = z.object({
   email: z.string().email("please enter a valid email!"),
   password: z.string().min(6, "password must be at last 6 characters"),
 });
 
 const LoginPage = () => {
   const handleLogin = (data: FieldValues) => {
-console.log(data)
+    console.log(data);
   };
   return (
     <Box>
@@ -64,21 +56,19 @@ console.log(data)
                 Social Platforms
               </Typography>
 
-              <Stack direction={'row'} spacing={2} my={2}>
-              <Button
-                onClick={() =>
-                  signIn("github", {
-                    callbackUrl: "http://localhost:3000/dashboard",
-                  })
-                }
-              >
-               <GitHubIcon/>
-              </Button>
-              <Button
-                onClick={()=>signIn("google")}
-              >
-               <GoogleIcon/>
-              </Button>
+              <Stack direction={"row"} spacing={2} my={2}>
+                <Button
+                  onClick={() =>
+                    signIn("github", {
+                      callbackUrl: "http://localhost:3000/dashboard",
+                    })
+                  }
+                >
+                  <GitHubIcon />
+                </Button>
+                <Button onClick={() => signIn("google")}>
+                  <GoogleIcon />
+                </Button>
               </Stack>
             </Box>
           </Box>
