@@ -78,10 +78,9 @@ const BBSelectField = ({
 }: ITextField) => {
   const { control, formState } = useFormContext();
   const isError = formState.errors[name] !== undefined;
-console.log(items)
+
   return (
     <Controller
-  
       control={control}
       name={name}
       render={({ field }) => (
@@ -99,7 +98,6 @@ console.log(items)
           }
         >
           {items.map((item) => (
-            console.log(item),
             <MenuItem key={item} value={item}>
               {item}
             </MenuItem>

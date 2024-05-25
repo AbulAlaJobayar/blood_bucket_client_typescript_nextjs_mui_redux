@@ -1,4 +1,3 @@
-
 export const district = [
   " Dhaka",
   "Faridpur",
@@ -75,6 +74,21 @@ export const bloodGroupsType = {
   "AB+": "AB_POSITIVE",
   "AB-": "AB_NEGATIVE",
 };
+
+export const formatBloodType = (bloodType: string): string => {
+  const bloodTypeMap:Record<string,string> = {
+    A_POSITIVE: "A+",
+    B_POSITIVE: "B+",
+    AB_POSITIVE: "AB+",
+    O_POSITIVE: "O+",
+    A_NEGATIVE: "A-",
+    B_NEGATIVE: "B-",
+    AB_NEGATIVE: "AB-",
+    O_NEGATIVE: "O-",
+  };
+  return bloodTypeMap[bloodType] || bloodType;
+};
+
 export type IGenericErrorResponse = {
   statusCode: number;
   message: string;
@@ -87,9 +101,9 @@ type IGenericErrorMessage = {
 export type TResponseSuccessType = {
   data: any;
   meta: IMeta;
-}
+};
 export type IMeta = {
   page: number;
   limit: number;
   total: number;
-}
+};

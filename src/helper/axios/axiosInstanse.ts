@@ -1,3 +1,4 @@
+
 import { authKey } from "@/constant/authKey";
 import { getFromLocalStorage, setToLocalStorage } from "@/utils/local-storage";
 import axios from "axios";
@@ -33,11 +34,13 @@ axios.interceptors.response.use(
   function (response) {
     // Any status code that lie within the range of 2xx cause this function to trigger
     // Do something with response data
-    const responseObject: TResponseSuccessType = {
-        data: response?.data?.data,
-        meta: response?.data?.meta,
-      };
-      return responseObject;
+
+    // const responseObject: TResponseSuccessType = {
+    //     data: response?.data?.data,
+    //     meta: response?.data?.meta,
+    //   };
+      // return responseObject;
+      return response
   
   },
  async function (error) {
