@@ -13,7 +13,7 @@ type TFormConfig = {
 };
 type TFormProps = {
   children: ReactNode;
-  onSubmit: SubmitHandler<FieldValues>;
+  onSubmit: SubmitHandler<FieldValues|any>;
 } & TFormConfig;
 
 const BBForm = ({

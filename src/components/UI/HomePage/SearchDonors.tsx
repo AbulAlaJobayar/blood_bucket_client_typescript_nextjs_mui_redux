@@ -1,21 +1,21 @@
 "use client";
+
 import BBForm from "@/components/Form/BBForm";
 import BBSelectField from "@/components/Form/BBSelectField";
 import { Box, Button, Container, Stack, Typography } from "@mui/material";
-import { useRouter } from "next/navigation";
 import { FieldValues } from "react-hook-form";
 import SearchIcon from "@mui/icons-material/Search";
-import TopShapeDivider from "../TopShapeDiveder.tsx/TopShapeDivider";
-import { district } from "@/types";
+import { bloodGroupsType, district } from "@/types";
+import { useRouter } from "next/navigation";
 
 const SearchDonors = () => {
   const router = useRouter();
   const handleSubmit = (data: FieldValues) => {
-    console.log(data);
-    router.push("/");
+    const queryString = new URLSearchParams(data).toString();
+    router.push(`/searchdonors?${queryString}`);
   };
   return (
-    <Box my={15} py={10} bgcolor={"#FAFAFA"} >
+    <Box my={15} py={10} bgcolor={"#FAFAFA"}>
       <Container>
         <Stack direction={"column"} spacing={2} my={5}>
           <Typography variant="h4" fontWeight={700}>
@@ -32,7 +32,7 @@ const SearchDonors = () => {
         <BBForm onSubmit={handleSubmit}>
           <Stack direction={{ xs: "column", md: "row" }} spacing={2}>
             <BBSelectField
-              items={["a+", "b+"]}
+              items={Object.keys(bloodGroupsType)}
               name="bloodType"
               fullWidth
               label="BloodType"

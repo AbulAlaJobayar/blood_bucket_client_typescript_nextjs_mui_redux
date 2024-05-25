@@ -33,7 +33,6 @@ const BBDatePicker = ({
               {...field}
               label={label}
               timezone="system"
-              disablePast
               value={value || Date.now()}
               onChange={(data) => onChange(data)}
               slotProps={{

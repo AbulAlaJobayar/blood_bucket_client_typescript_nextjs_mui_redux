@@ -10,15 +10,35 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn } from "next-auth/react";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import GoogleIcon from "@mui/icons-material/Google";
+import { useState } from "react";
+import { userLogin } from "@/services/action/userLogin";
+import { storeUserInfo } from "@/services/authService";
+import { toast } from "sonner";
 
  const validationSchema = z.object({
   email: z.string().email("please enter a valid email!"),
-  password: z.string().min(6, "password must be at last 6 characters"),
+  password: z.string().min(5, "password must be at last 5 characters"),
 });
 
 const LoginPage = () => {
-  const handleLogin = (data: FieldValues) => {
-    console.log(data);
+  const [error,setError]=useState()
+  const handleLogin = async(data: FieldValues) => {
+    console.log(data)
+    try {
+      const res = await userLogin(data);
+      
+      console.log(res);
+      if (res?.data?.token) {
+        storeUserInfo(res?.data?.token);
+        toast.success(res.message);
+        // router.push("/dashboard");
+      } else {
+        setError(res.message)
+        toast.error(res?.message ? res?.message : "something went wrong");
+      }
+    } catch (error: any) {
+      console.log(error.message);
+    }
   };
   return (
     <Box>

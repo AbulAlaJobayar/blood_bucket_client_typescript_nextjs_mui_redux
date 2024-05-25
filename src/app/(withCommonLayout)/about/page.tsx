@@ -1,4 +1,7 @@
+
 import { Box, Container, Grid, Typography } from "@mui/material";
+import { useSearchParams } from "next/navigation";
+
 
 const AboutPage = () => {
   return (

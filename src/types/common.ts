@@ -1,3 +1,4 @@
+
 export const district = [
   " Dhaka",
   "Faridpur",
@@ -64,3 +65,31 @@ export const district = [
   "Netrokona",
   "Sherpur",
 ];
+export const bloodGroupsType = {
+  "A+": "A_POSITIVE",
+  "B+": "B_POSITIVE",
+  "A-": "A_NEGATIVE",
+  "B-": "B_NEGATIVE",
+  "O+": "O_POSITIVE",
+  "O-": "O_NEGATIVE",
+  "AB+": "AB_POSITIVE",
+  "AB-": "AB_NEGATIVE",
+};
+export type IGenericErrorResponse = {
+  statusCode: number;
+  message: string;
+  errorMessage: IGenericErrorMessage[];
+};
+type IGenericErrorMessage = {
+  path: string | number;
+  message: string;
+};
+export type TResponseSuccessType = {
+  data: any;
+  meta: IMeta;
+}
+export type IMeta = {
+  page: number;
+  limit: number;
+  total: number;
+}

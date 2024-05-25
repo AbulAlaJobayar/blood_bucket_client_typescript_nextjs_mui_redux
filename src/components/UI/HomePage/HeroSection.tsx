@@ -1,6 +1,7 @@
 import { Box, Button, Container, Stack, Typography } from "@mui/material";
 import Image from "next/image";
 import heroImage from "@/assets/heroImages.jpg";
+import Link from "next/link";
 const HeroSection = () => {
   return (
     <Box bgcolor={"#FAFAFA"}>
@@ -21,8 +22,8 @@ const HeroSection = () => {
               Life-Saving Blood Donations
             </Typography>
             <Stack direction={"row"} gap={3} my={3}>
-              <Button> Join as a Donar</Button>
-              <Button variant="outlined">Search Donors</Button>
+            <Link href={"/register"}>   <Button> Join as a Donar</Button></Link>
+              <Link href={"/searchdonors"}> <Button variant="outlined">Search Donors</Button></Link>
             </Stack>
           </Box>
           <Box sx={{ flex: 1 }}>

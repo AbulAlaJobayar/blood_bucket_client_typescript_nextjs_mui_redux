@@ -16,12 +16,25 @@ import AdbIcon from "@mui/icons-material/Adb";
 import Link from "next/link";
 import Image from "next/image";
 import logo from "@/assets/logo/brandLogo.png";
+import { Stack } from "@mui/material";
+import useUserInfo from "@/hooks/useUserInfo";
+import { useRouter } from "next/navigation";
+import { logoutUser } from "@/services/action/logoutUser";
+import { toast } from "sonner";
 
-const pages = ["Home", "About", "Search Donors", "Add Blood Request"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
 const Navbar = () => {
   const [nav, setNav] = React.useState<null | HTMLElement>(null);
   const [user, setUser] = React.useState<null | HTMLElement>(null);
+  const userInfo = useUserInfo();
+  const router = useRouter();
+console.log(userInfo)
+  const handleLogOut = () => {
+    logoutUser(router);
+    setUser(null)
+    toast.success("LogOut Successfully")
+
+  };
+  const users = true;
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setNav(event.currentTarget);
@@ -39,7 +52,7 @@ const Navbar = () => {
   };
 
   return (
-    <AppBar position="sticky" >
+    <AppBar position="sticky">
       <Container>
         <Toolbar disableGutters>
           <Box
@@ -84,13 +97,22 @@ const Navbar = () => {
                 flexGrow: 1,
               }}
             >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">
-                    <Link href={`/${page}`}>{page}</Link>
-                  </Typography>
-                </MenuItem>
-              ))}
+              {" "}
+              <MenuItem>
+                <Link href={"/"} onClick={handleCloseNavMenu}>
+                  <Typography textAlign="center">Home</Typography>
+                </Link>
+              </MenuItem>
+              <MenuItem>
+                <Link href={"/about"} onClick={handleCloseNavMenu}>
+                  <Typography textAlign="center">About</Typography>
+                </Link>
+              </MenuItem>
+              <MenuItem>
+                <Link href={"/searchdonors"} onClick={handleCloseNavMenu}>
+                  <Typography textAlign="center">Search Blood</Typography>
+                </Link>
+              </MenuItem>
             </Menu>
           </Box>
           <Box
@@ -106,21 +128,39 @@ const Navbar = () => {
             </Link>
           </Box>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "white", display: "block" }}
-              >
-                <Link href={`/${page}`}>{page}</Link>
-              </Button>
-            ))}
+            <Stack
+              direction={"row"}
+              justifyContent={"center"}
+              alignItems={"center"}
+              gap={2}
+              color={"#FFFF"}
+            >
+              <MenuItem>
+                <Link href={"/"} onClick={handleCloseNavMenu}>
+                  <Typography textAlign="center">Home</Typography>
+                </Link>
+              </MenuItem>
+              <MenuItem>
+                <Link href={"/about"} onClick={handleCloseNavMenu}>
+                  <Typography textAlign="center">About</Typography>
+                </Link>
+              </MenuItem>
+              <MenuItem>
+                <Link href={"/searchdonors"} onClick={handleCloseNavMenu}>
+                  <Typography textAlign="center">Search Blood</Typography>
+                </Link>
+              </MenuItem>
+            </Stack>
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                {userInfo ? (
+                 <Avatar alt={userInfo?.name} src="" />
+                ) : (
+                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                )}
               </IconButton>
             </Tooltip>
             <Menu
@@ -139,13 +179,32 @@ const Navbar = () => {
               open={Boolean(user)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">
-                    <Link href={`/${setting}`}>{setting}</Link>
+              <MenuItem>
+                {" "}
+                <Link href={"/dashboard"}>
+                  <Typography textAlign="center" onClick={handleCloseUserMenu}>
+                    Dashboard
                   </Typography>
-                </MenuItem>
-              ))}
+                </Link>
+              </MenuItem>
+              <MenuItem>
+                {userInfo && (
+                  <Link href={"/profile"} onClick={handleCloseNavMenu}>
+                    <Typography textAlign="center">Profile</Typography>
+                  </Link>
+                )}
+              </MenuItem>
+              <MenuItem>
+                {" "}
+                {userInfo ?  <Link href={'/'} onClick={handleLogOut} >
+                    {" "}
+                    <Typography textAlign="center">Logout</Typography>
+                  </Link>:(
+                  <Link href={"/login"} onClick={handleCloseNavMenu}>
+                    <Typography textAlign="center">Login</Typography>
+                  </Link>
+                ) }
+              </MenuItem>
             </Menu>
           </Box>
         </Toolbar>

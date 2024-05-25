@@ -4,23 +4,65 @@ import BBForm from "@/components/Form/BBForm";
 import BBInput from "@/components/Form/BBInput";
 import { Box, Button, Container, Grid, Stack, Typography } from "@mui/material";
 import Link from "next/link";
-import { FieldValues } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+
 import { signIn } from "next-auth/react";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import GoogleIcon from "@mui/icons-material/Google";
 import BBSelectField from "@/components/Form/BBSelectField";
 import BBDatePicker from "@/components/Form/BBDatePicker";
 
-export const validationSchema = z.object({
-  email: z.string().email("please enter a valid email!"),
-  password: z.string().min(6, "password must be at last 6 characters"),
-});
+import { toast } from "sonner";
+import { userLogin } from "@/services/action/userLogin";
+import { storeUserInfo } from "@/services/authService";
+import { useRouter } from "next/navigation";
+import { register } from "@/services/action/register";
+import { bloodGroupsType, district } from "@/types";
+import { dateFormatter } from "@/utils/dateFormetter";
+
+// export const validationSchema = z.object({
+//   name:z.string()
+//   email: z.string().email("please enter a valid email!"),
+//   password: z.string().min(6, "password must be at last 6 characters"),
+// });
+interface IFormInput {
+  name: string;
+  email: string;
+  password: string;
+  bloodType: keyof typeof bloodGroupsType; // Ensure bloodGroup matches the keys of bloodGroupMapping
+  location: string[];
+  age: string | number;
+  bio: string;
+  lastDonationDate: string | Date | undefined | any;
+}
 
 const RegisterPage = () => {
-  const handleLogin = (data: FieldValues) => {
-    console.log(data);
+  const router = useRouter();
+  const handleLogin = async (data: IFormInput) => {
+    data.lastDonationDate = dateFormatter(data.lastDonationDate);
+    data.age = Number(data.age);
+    console.log(data.email);
+    try {
+      const res = await register({
+        ...data,
+        email: data.email,
+        bloodType: bloodGroupsType[data.bloodType],
+      });
+      console.log(res);
+      if (res?.data?.id) {
+        toast.success(res?.message);
+        const result = await userLogin({
+          password: data.password,
+          email: data.email,
+        });
+        console.log(result.data.token);
+        if (result?.data?.token) {
+          storeUserInfo(result?.data?.token);
+          router.push("/dashboard");
+        }
+      }
+    } catch (err: any) {
+      console.error(err.message);
+    }
   };
   return (
     <Box>
@@ -74,7 +116,7 @@ const RegisterPage = () => {
               </Stack>
             </Box>
           </Box>
-          <Box sx={{ flex: 1,my:4 }}>
+          <Box sx={{ flex: 1, my: 4 }}>
             <Typography variant="h6" fontWeight={700}>
               Register
             </Typography>
@@ -82,8 +124,15 @@ const RegisterPage = () => {
             <Box>
               <BBForm
                 onSubmit={handleLogin}
-                resolver={zodResolver(validationSchema)}
-                defaultValues={{ email: "", password: "" }}
+                // resolver={zodResolver(validationSchema)}
+                defaultValues={{
+                  name: "",
+                  email: "",
+                  password: "",
+                  bloodType: "",
+                  location: "",
+                  lastDonationDate: undefined,
+                }}
               >
                 <Grid container spacing={3} my={1}>
                   <Grid item md={6}>
@@ -107,7 +156,7 @@ const RegisterPage = () => {
                   </Grid>
                   <Grid item md={6}>
                     <BBSelectField
-                      items={["a+", "b+"]}
+                      items={Object.keys(bloodGroupsType)}
                       name="bloodType"
                       fullWidth
                       label="BloodType"
@@ -115,7 +164,8 @@ const RegisterPage = () => {
                     />
                   </Grid>
                   <Grid item md={6}>
-                    <BBInput
+                    <BBSelectField
+                      items={district}
                       name="location"
                       fullWidth
                       label="Location"
@@ -123,20 +173,19 @@ const RegisterPage = () => {
                     />
                   </Grid>
                   <Grid item md={6}>
-                    <BBInput
-                      name="age"
+                    <BBSelectField
+                      items={["Yes","No"]}
+                      name="donateblood"
                       fullWidth
-                      label="Age"
+                      label="Donate Blood"
                       size="small"
                     />
                   </Grid>
                   <Grid item md={6}>
-                    <BBInput
-                      name="bio"
-                      fullWidth
-                      label="Bio"
-                      size="small"
-                    />
+                    <BBInput name="age" fullWidth label="Age" size="small" />
+                  </Grid>
+                  <Grid item md={6}>
+                    <BBInput name="bio" fullWidth label="Bio" size="small" />
                   </Grid>
                   <Grid item md={6}>
                     <BBDatePicker
