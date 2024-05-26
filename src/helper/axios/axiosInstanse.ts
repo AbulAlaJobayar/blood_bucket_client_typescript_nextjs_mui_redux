@@ -12,11 +12,11 @@ instance.defaults.headers.post["Content-Type"] = "application/json";
 instance.defaults.headers["Accept"] = "application/json";
 instance.defaults.timeout = 60000;
 // Add a request interceptor
-axios.interceptors.request.use(
+instance.interceptors.request.use(
   function (config) {
     // Do something before request is sent
-    const accessToken = getFromLocalStorage(authKey);
-
+  const accessToken = getFromLocalStorage(authKey);
+console.log({accessToken})
     if (accessToken) {
       config.headers.Authorization = accessToken;
     }
@@ -29,7 +29,7 @@ axios.interceptors.request.use(
 );
 
 // Add a response interceptor
-axios.interceptors.response.use(
+instance.interceptors.response.use(
          //@ts-ignore
   function (response) {
     // Any status code that lie within the range of 2xx cause this function to trigger

@@ -6,7 +6,6 @@ const donorApi = baseApi.injectEndpoints({
   endpoints: (build) => ({
     getDonor: build.query({
       query: (args: Record<string, any>) => ({
-       
         url: "/donor-list",
         method: "GET",
         params: args,
@@ -19,6 +18,14 @@ const donorApi = baseApi.injectEndpoints({
       },
       providesTags: [tagType.donor],
     }),
+    getSingleDonor: build.query({
+      query: (id:string) => ({
+        url: `/donor/${id}`,
+        method: "GET",
+       
+      }),
+      providesTags: [tagType.donor],
+    }),
   }),
 });
-export const { useGetDonorQuery } = donorApi;
+export const { useGetDonorQuery,useGetSingleDonorQuery } = donorApi;

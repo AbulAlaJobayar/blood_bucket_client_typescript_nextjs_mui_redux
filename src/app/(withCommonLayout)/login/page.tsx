@@ -14,6 +14,7 @@ import { useState } from "react";
 import { userLogin } from "@/services/action/userLogin";
 import { storeUserInfo } from "@/services/authService";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
  const validationSchema = z.object({
   email: z.string().email("please enter a valid email!"),
@@ -22,8 +23,9 @@ import { toast } from "sonner";
 
 const LoginPage = () => {
   const [error,setError]=useState()
+  const router=useRouter()
   const handleLogin = async(data: FieldValues) => {
-    console.log(data)
+    // console.log(data)
     try {
       const res = await userLogin(data);
       
@@ -31,7 +33,8 @@ const LoginPage = () => {
       if (res?.data?.token) {
         storeUserInfo(res?.data?.token);
         toast.success(res.message);
-        // router.push("/dashboard");
+        router.push("/");
+        
       } else {
         setError(res.message)
         toast.error(res?.message ? res?.message : "something went wrong");
