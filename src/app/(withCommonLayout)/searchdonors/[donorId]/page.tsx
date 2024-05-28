@@ -43,7 +43,7 @@ const DonorDetailsPage = ({ params }: { params: { donorId: string } }) => {
   const { data: singleDonor, isLoading } = useGetSingleDonorQuery(
     params?.donorId
   );
-  // console.log(singleDonor);
+  // console.log(singleDonor)
   const donor = singleDonor?.data;
   const [createRequest] = useCreateRequestMutation();
   const handleRequest = async (data: FieldValues) => {

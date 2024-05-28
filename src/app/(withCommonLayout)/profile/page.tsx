@@ -1,12 +1,49 @@
-"use client"
+"use client";
 import BBDatePicker from "@/components/Form/BBDatePicker";
 import BBForm from "@/components/Form/BBForm";
 import BBInput from "@/components/Form/BBInput";
 import BBSelectField from "@/components/Form/BBSelectField";
-import { bloodGroupsType, district } from "@/types";
-import { Box, Button, Container, Grid, Typography } from "@mui/material";
+import { useGetMeQuery, useUpdateByMeMutation } from "@/redux/api/authApi";
+import { bloodGroupsType, district, formatBloodType } from "@/types";
+import { dateFormatter } from "@/utils/dateFormetter";
+import { Box, Button, Container, Grid, Stack, Typography } from "@mui/material";
+import Link from "next/link";
+import { FieldValues } from "react-hook-form";
+
+interface IFormInput {
+  name: string;
+  bloodType: keyof typeof bloodGroupsType; // Ensure bloodGroup matches the keys of bloodGroupMapping
+  location: string[];
+  age: string | number;
+  bio: string;
+  donateblood:string;
+  lastDonationDate: string | Date | undefined | any;
+}
 
 const ProfilePage = () => {
+  const {data:me,isLoading}=useGetMeQuery('')
+
+const [updateByMe]=useUpdateByMeMutation()
+  const handleUpdate=async(data:IFormInput)=>{
+    data.lastDonationDate = dateFormatter(data.lastDonationDate);
+    data.age = Number(data.age);
+    try {
+      const res = await updateByMe({
+        ...data,
+        bloodType: bloodGroupsType[data.bloodType],
+      });
+      console.log(res);
+    } catch (error) {
+      
+    }
+  }
+  if(isLoading){
+    return(
+    <>
+    loading...........
+    </>)
+  }
+  console.log(me?.data?.location)
   return (
     <Box>
       <Box
@@ -24,43 +61,29 @@ const ProfilePage = () => {
           </Box>
         </Container>
       </Box>
-      <Box sx={{ flex: 1, my: 4 }}>
+      <Container>
+      
+          <Box  my={7}>
             <Typography variant="h6" fontWeight={700}>
-              Register
+              Update Your Profile
             </Typography>
-
             <Box>
               <BBForm
-                onSubmit={'handleLogin'}
+                onSubmit={handleUpdate}
                 // resolver={zodResolver(validationSchema)}
                 defaultValues={{
-                  name: "",
-                  email: "",
-                  password: "",
-                  bloodType: "",
-                  location: "",
-                  lastDonationDate: undefined,
+                  name: me?.data?.name,
+                  bloodType:formatBloodType(me?.data?. bloodType)||"",
+                  location:  me?.data?.location||"",
+                  donateblood:me?.data?.userProfile?.donateblood||"",
+                  age:me?.data?.userProfile?.age||"",
+                  bio:me?.data?.userProfile?.bio ||"",
+                  lastDonationDate:undefined
                 }}
               >
                 <Grid container spacing={3} my={1}>
                   <Grid item md={6}>
                     <BBInput name="name" fullWidth label="Name" size="small" />
-                  </Grid>
-                  <Grid item md={6}>
-                    <BBInput
-                      name="email"
-                      fullWidth
-                      label="Email"
-                      size="small"
-                    />
-                  </Grid>
-                  <Grid item md={6}>
-                    <BBInput
-                      name="password"
-                      fullWidth
-                      label="Password"
-                      size="small"
-                    />
                   </Grid>
                   <Grid item md={6}>
                     <BBSelectField
@@ -82,7 +105,7 @@ const ProfilePage = () => {
                   </Grid>
                   <Grid item md={6}>
                     <BBSelectField
-                      items={["Yes","No"]}
+                      items={["Yes", "No"]}
                       name="donateblood"
                       fullWidth
                       label="Donate Blood"
@@ -112,12 +135,20 @@ const ProfilePage = () => {
                     margin: "10px 0px",
                   }}
                 >
-                  Register
+                  Update
                 </Button>
-                
+                <Typography component="p" fontWeight={300}>
+                  Do you want to change your Password?{" "}
+                  <Box component={'span'} style={{ color: "blue" }}>
+                    <Link color="blue" href={"/login"}>
+                     Change Password
+                    </Link>
+                  </Box>
+                </Typography>
               </BBForm>
             </Box>
-            </Box>
+          </Box>
+      </Container>
     </Box>
   );
 };

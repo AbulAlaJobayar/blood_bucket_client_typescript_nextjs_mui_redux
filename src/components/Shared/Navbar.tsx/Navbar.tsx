@@ -98,8 +98,8 @@ console.log(userInfo)
               }}
             >
               {" "}
-              <MenuItem>
-                <Link href={"/"} onClick={handleCloseNavMenu}>
+              <MenuItem >
+                <Link href={"/"} onClick={handleCloseNavMenu}  >
                   <Typography textAlign="center">Home</Typography>
                 </Link>
               </MenuItem>
@@ -133,21 +133,21 @@ console.log(userInfo)
               justifyContent={"center"}
               alignItems={"center"}
               gap={2}
-              color={"#FFFF"}
+              
             >
               <MenuItem>
-                <Link href={"/"} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">Home</Typography>
+                <Link href={"/"} >
+                  <Typography textAlign="center" color={"#FFFF"}  fontWeight={400}>Home</Typography>
                 </Link>
               </MenuItem>
               <MenuItem>
-                <Link href={"/about"} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">About</Typography>
+                <Link href={"/about"} >
+                  <Typography textAlign="center" color={"#FFFF"}  fontWeight={400}>About</Typography>
                 </Link>
               </MenuItem>
               <MenuItem>
-                <Link href={"/searchdonors"} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">Search Blood</Typography>
+                <Link href={"/searchdonors"} >
+                  <Typography textAlign="center" color={"#FFFF"} fontWeight={400}>Search Blood</Typography>
                 </Link>
               </MenuItem>
             </Stack>

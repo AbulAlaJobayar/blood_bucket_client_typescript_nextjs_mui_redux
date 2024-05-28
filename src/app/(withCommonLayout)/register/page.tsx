@@ -32,6 +32,7 @@ interface IFormInput {
   location: string[];
   age: string | number;
   bio: string;
+  donateblood:string;
   lastDonationDate: string | Date | undefined | any;
 }
 
@@ -126,11 +127,21 @@ const RegisterPage = () => {
                 onSubmit={handleLogin}
                 // resolver={zodResolver(validationSchema)}
                 defaultValues={{
+                 
+                  
+                 
+                  
+                
+                 
+                 
                   name: "",
                   email: "",
                   password: "",
                   bloodType: "",
                   location: "",
+                  age: "",
+                  bio:"",
+                  donateblood:"",
                   lastDonationDate: undefined,
                 }}
               >
