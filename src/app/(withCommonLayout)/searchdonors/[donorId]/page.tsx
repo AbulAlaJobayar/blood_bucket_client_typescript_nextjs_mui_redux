@@ -33,9 +33,11 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { dateFormatter } from "@/utils/dateFormetter";
 import { useCreateRequestMutation } from "@/redux/api/requestApi";
+import EmailIcon from '@mui/icons-material/Email';
 //
 const DonorDetailsPage = ({ params }: { params: { donorId: string } }) => {
-  // const userInfo = useUserInfo();
+  const userInfo = useUserInfo();
+  console.log(userInfo.id)
   const [checked, setChecked] = useState(false);
   const isLogin = isLoggedIn();
   // console.log({isLogin})
@@ -43,7 +45,7 @@ const DonorDetailsPage = ({ params }: { params: { donorId: string } }) => {
   const { data: singleDonor, isLoading } = useGetSingleDonorQuery(
     params?.donorId
   );
-  // console.log(singleDonor)
+  console.log({singleDonor})
   const donor = singleDonor?.data;
   const [createRequest] = useCreateRequestMutation();
   const handleRequest = async (data: FieldValues) => {
@@ -105,6 +107,14 @@ const DonorDetailsPage = ({ params }: { params: { donorId: string } }) => {
       </>
     );
   }
+let isAvailable 
+if(singleDonor?.data?.requester){
+  isAvailable=singleDonor?.data?.requester.find((requester:any)=>requester.requesterId==userInfo.id && requester.requestStatus== "APPROVED")
+}
+// console.log(singleDonor?.data?.requester.find((requester:any)=>{console.log(requester.id)}))
+console.log(userInfo.id)
+console.log(isAvailable)
+
   return (
     <Box>
       <Box bgcolor={"#F1F1F1"}>
@@ -146,6 +156,18 @@ const DonorDetailsPage = ({ params }: { params: { donorId: string } }) => {
                     {donor?.availability === true ? "True" : "False"}
                   </Box>
                 </Typography>
+                {isAvailable &&
+                <>
+                  <Typography display={"flex"} alignItems={"center"} gap={1}>
+                  {" "}
+                  <EmailIcon fontSize="small" />
+                  <Box component={"span"} sx={{ fontWeight: 400 }}>
+                    {donor?.email}
+                  </Box>
+                </Typography>
+                  
+                </>
+                }
               </Stack>
             </Box>
             <Box sx={{ display: { xs: "none", sm: "block" } }}>
@@ -176,10 +198,10 @@ const DonorDetailsPage = ({ params }: { params: { donorId: string } }) => {
               onSubmit={handleRequest}
               // resolver={zodResolver(validationSchema)}
               defaultValues={{
-                phoneNumber: "",
-                hospitalName: "",
-                hospitalAddress: "",
-                reason: "",
+                phoneNumber:isAvailable?.phoneNumber|| "",
+                hospitalName:isAvailable?.hospitalName|| "",
+                hospitalAddress:isAvailable?.hospitalAddress|| "",
+                reason: isAvailable?.reason||"",
                 dateOfDonation: undefined,
               }}
             >
@@ -251,105 +273,7 @@ const DonorDetailsPage = ({ params }: { params: { donorId: string } }) => {
         </Box>
       </Box>
     </Box>
-    // <Container
-    //   sx={{
-    //     justifyContent: "center",
-    //     alignItems: "center",
-    //     mx: "auto",
-    //     display: "flex",
-    //     my: "auto",
-    //     marginTop: 10,
-    //   }}
-    // >
-    //   <Card sx={{ minWidth: 345 }}>
-    //     <CardContent>
-    //       <Stack spacing={2} direction={"row"}>
-    //         <Box sx={{ flex: 1 / 3 }}>
-    //           <PersonOutlineIcon
-    //             sx={{
-    //               height: "100px",
-    //               width: "100px",
-    //               color: "primary.main",
-    //             }}
-    //           />
-    //         </Box>
-    //         <Box>
-    //           <Typography>
-    //             Name:
-    //             <Box
-    //               component={"span"}
-    //               ml={1}
-    //               fontWeight={600}
-    //               sx={{ textTransform: "capitalize" }}
-    //             >
-    //               {donor?.name}
-    //             </Box>{" "}
-    //           </Typography>
-    //           <Typography>
-    //             Email:
-    //             <Box
-    //               component={"span"}
-    //               ml={1}
-    //               fontWeight={600}
-    //               sx={{ textTransform: "capitalize" }}
-    //             >
-    //               {donor?.email}
-    //             </Box>{" "}
-    //           </Typography>
-    //           <Typography>
-    //             Age:
-    //             <Box
-    //               component={"span"}
-    //               ml={1}
-    //               fontWeight={600}
-    //               sx={{ textTransform: "capitalize" }}
-    //             >
-    //               {donor?.userProfile?.age}
-    //             </Box>{" "}
-    //           </Typography>
-    //           <Typography>
-    //             Blood Type:{" "}
-    //             <Box
-    //               component={"span"}
-    //               ml={1}
-    //               sx={{ textTransform: "capitalize" }}
-    //               fontWeight={600}
-    //             >
-    //               {formatBloodType(donor?.bloodType)}
-    //             </Box>
-    //           </Typography>
-    //           <Typography>
-    //             Location:{" "}
-    //             <Box
-    //               component={"span"}
-    //               ml={1}
-    //               sx={{ textTransform: "capitalize" }}
-    //               fontWeight={600}
-    //             >
-    //               {donor?.location}
-    //             </Box>{" "}
-    //           </Typography>
-    //           <Typography>
-    //             Availability:{" "}
-    //             <Box
-    //               component={"span"}
-    //               ml={1}
-    //               sx={{ textTransform: "capitalize" }}
-    //               fontWeight={600}
-    //             >
-    //               {donor?.availability === true ? "True" : "False"}
-    //             </Box>{" "}
-    //           </Typography>
-    //         </Box>
-    //       </Stack>
-    //     </CardContent>
-    //     <CardActions>
-    //       <Button size="small" fullWidth href={`/bloodrequest/${donor?.id}`}>
-    //         Request Blood
-    //       </Button>
-    //     </CardActions>
-    //   </Card>
-    // </Container>
+ 
   );
 };
 

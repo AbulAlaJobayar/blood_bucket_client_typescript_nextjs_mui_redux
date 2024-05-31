@@ -58,7 +58,7 @@ const RegisterPage = () => {
         console.log(result.data.token);
         if (result?.data?.token) {
           storeUserInfo(result?.data?.token);
-          router.push("/dashboard");
+          router.push("/profile");
         }
       }
     } catch (err: any) {

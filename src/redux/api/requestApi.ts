@@ -11,6 +11,28 @@ const requestApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [tagType.request],
     }),
+    getMyRequest:build.query({
+     query:()=>({
+      url: "/my-request",
+      method: "GET",
+     }),
+     providesTags: [tagType.request]
+    }),
+    requestToMe:build.query({
+     query:()=>({
+      url: "/donation-request",
+      method: "GET",
+     }),
+     providesTags: [tagType.request]
+    }),
+    updateRequestStates:build.mutation({
+     query:({id,status})=>({
+      url: `/donation-request/${id}`,
+      method: "PUT",
+      data:{status}
+     }),
+     invalidatesTags: [tagType.request,tagType.donor]
+    })
   }),
 });
-export const {useCreateRequestMutation}=requestApi
+export const {useCreateRequestMutation,useGetMyRequestQuery,useRequestToMeQuery,useUpdateRequestStatesMutation}=requestApi

@@ -154,7 +154,7 @@ console.log(userInfo)
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
+            <Tooltip title={userInfo?userInfo?.name:'Profile settings'}>
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 {userInfo ? (
                  <Avatar alt={userInfo?.name} src="" />
@@ -179,7 +179,9 @@ console.log(userInfo)
               open={Boolean(user)}
               onClose={handleCloseUserMenu}
             >
-              <MenuItem>
+              {
+                userInfo?.role==="admin" && (
+                  <MenuItem>
                 {" "}
                 <Link href={"/dashboard"}>
                   <Typography textAlign="center" onClick={handleCloseUserMenu}>
@@ -187,21 +189,23 @@ console.log(userInfo)
                   </Typography>
                 </Link>
               </MenuItem>
+                )
+              }
               <MenuItem>
                 {userInfo && (
-                  <Link href={"/profile"} onClick={handleCloseNavMenu}>
-                    <Typography textAlign="center">Profile</Typography>
+                  <Link href={"/profile"} >
+                    <Typography textAlign="center" onClick={handleCloseNavMenu}>Profile</Typography>
                   </Link>
                 )}
               </MenuItem>
               <MenuItem>
                 {" "}
-                {userInfo ?  <Link href={'/'} onClick={handleLogOut} >
+                {userInfo ?  <Link href={'/'}  >
                     {" "}
-                    <Typography textAlign="center">Logout</Typography>
+                    <Typography textAlign="center" onClick={handleLogOut}>Logout</Typography>
                   </Link>:(
-                  <Link href={"/login"} onClick={handleCloseNavMenu}>
-                    <Typography textAlign="center">Login</Typography>
+                  <Link href={"/login"} >
+                    <Typography textAlign="center" onClick={handleCloseNavMenu}>Login</Typography>
                   </Link>
                 ) }
               </MenuItem>

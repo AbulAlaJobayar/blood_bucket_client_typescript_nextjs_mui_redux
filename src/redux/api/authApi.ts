@@ -20,6 +20,15 @@ const authApi = baseApi.injectEndpoints({
             }),
             invalidatesTags: [tagType.auth],
           }),
+          changePassword: build.mutation({
+            query: (data) => ({
+              url: '/changePassword',
+              method: "POST",
+              data
+             
+            }),
+            invalidatesTags: [tagType.auth],
+          }),
         }),
       });
-      export const { useGetMeQuery,useUpdateByMeMutation} = authApi;
+      export const { useGetMeQuery,useUpdateByMeMutation,useChangePasswordMutation} = authApi;

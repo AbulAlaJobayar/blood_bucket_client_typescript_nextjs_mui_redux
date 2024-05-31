@@ -18,6 +18,14 @@ const donorApi = baseApi.injectEndpoints({
       },
       providesTags: [tagType.donor],
     }),
+    getAllUsers: build.query({
+      query: () => ({
+        url: "/users",
+        method: "GET",
+       
+      }),
+      providesTags: [tagType.donor],
+    }),
     getSingleDonor: build.query({
       query: (id:string) => ({
         url: `/donor/${id}`,
@@ -28,4 +36,4 @@ const donorApi = baseApi.injectEndpoints({
     }),
   }),
 });
-export const { useGetDonorQuery,useGetSingleDonorQuery } = donorApi;
+export const { useGetDonorQuery,useGetSingleDonorQuery ,useGetAllUsersQuery} = donorApi;

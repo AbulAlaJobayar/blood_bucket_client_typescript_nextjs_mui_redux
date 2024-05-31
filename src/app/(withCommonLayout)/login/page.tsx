@@ -33,7 +33,7 @@ const LoginPage = () => {
       if (res?.data?.token) {
         storeUserInfo(res?.data?.token);
         toast.success(res.message);
-        router.push("/");
+        router.push("/profile");
         
       } else {
         setError(res.message)

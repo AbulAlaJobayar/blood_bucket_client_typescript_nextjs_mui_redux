@@ -8,6 +8,7 @@ type TInputProps = {
   fullWidth?: boolean;
   required?: boolean;
   sx?: SxProps;
+  
 };
 
 const BBInput = ({
@@ -18,6 +19,7 @@ const BBInput = ({
   fullWidth,
   required,
   sx,
+
 }: TInputProps) => {
   const { control } = useFormContext();
   return (
