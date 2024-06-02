@@ -21,18 +21,20 @@ import useUserInfo from "@/hooks/useUserInfo";
 import { useRouter } from "next/navigation";
 import { logoutUser } from "@/services/action/logoutUser";
 import { toast } from "sonner";
-
+import dynamic from "next/dynamic";
+const AuthButton = dynamic(() => import("@/components/UI/AuthButton"), {
+  ssr: false,
+});
 const Navbar = () => {
   const [nav, setNav] = React.useState<null | HTMLElement>(null);
   const [user, setUser] = React.useState<null | HTMLElement>(null);
   const userInfo = useUserInfo();
   const router = useRouter();
-console.log(userInfo)
+  console.log(userInfo);
   const handleLogOut = () => {
     logoutUser(router);
-    setUser(null)
-    toast.success("LogOut Successfully")
-
+    setUser(null);
+    toast.success("LogOut Successfully");
   };
   const users = true;
 
@@ -98,8 +100,8 @@ console.log(userInfo)
               }}
             >
               {" "}
-              <MenuItem >
-                <Link href={"/"} onClick={handleCloseNavMenu}  >
+              <MenuItem>
+                <Link href={"/"} onClick={handleCloseNavMenu}>
                   <Typography textAlign="center">Home</Typography>
                 </Link>
               </MenuItem>
@@ -133,31 +135,48 @@ console.log(userInfo)
               justifyContent={"center"}
               alignItems={"center"}
               gap={2}
-              
             >
               <MenuItem>
-                <Link href={"/"} >
-                  <Typography textAlign="center" color={"#FFFF"}  fontWeight={400}>Home</Typography>
+                <Link href={"/"}>
+                  <Typography
+                    textAlign="center"
+                    color={"#FFFF"}
+                    fontWeight={400}
+                  >
+                    Home
+                  </Typography>
                 </Link>
               </MenuItem>
               <MenuItem>
-                <Link href={"/about"} >
-                  <Typography textAlign="center" color={"#FFFF"}  fontWeight={400}>About</Typography>
+                <Link href={"/about"}>
+                  <Typography
+                    textAlign="center"
+                    color={"#FFFF"}
+                    fontWeight={400}
+                  >
+                    About
+                  </Typography>
                 </Link>
               </MenuItem>
               <MenuItem>
-                <Link href={"/searchdonors"} >
-                  <Typography textAlign="center" color={"#FFFF"} fontWeight={400}>Search Blood</Typography>
+                <Link href={"/searchdonors"}>
+                  <Typography
+                    textAlign="center"
+                    color={"#FFFF"}
+                    fontWeight={400}
+                  >
+                    Search Blood
+                  </Typography>
                 </Link>
               </MenuItem>
             </Stack>
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title={userInfo?userInfo?.name:'Profile settings'}>
+            <Tooltip title={userInfo ? userInfo?.name : "Profile settings"}>
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 {userInfo ? (
-                 <Avatar alt={userInfo?.name} src="" />
+                  <Avatar alt={userInfo?.name} src="" />
                 ) : (
                   <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
                 )}
@@ -179,35 +198,28 @@ console.log(userInfo)
               open={Boolean(user)}
               onClose={handleCloseUserMenu}
             >
-              {
-                userInfo?.role==="admin" && (
-                  <MenuItem>
-                {" "}
-                <Link href={"/dashboard"}>
-                  <Typography textAlign="center" onClick={handleCloseUserMenu}>
-                    Dashboard
+              {userInfo?.role === "admin" && (
+                <MenuItem>
+                  {" "}
+                  <Link href={"/dashboard"}>
+                    <Typography
+                      textAlign="center"
+                      onClick={handleCloseUserMenu}
+                    >
+                      Dashboard
+                    </Typography>
+                  </Link>
+                </MenuItem>
+              )}
+              <MenuItem>
+                <Link href={"/profile"}>
+                  <Typography textAlign="center" onClick={handleCloseNavMenu}>
+                    Profile
                   </Typography>
                 </Link>
               </MenuItem>
-                )
-              }
-              <MenuItem>
-                {userInfo && (
-                  <Link href={"/profile"} >
-                    <Typography textAlign="center" onClick={handleCloseNavMenu}>Profile</Typography>
-                  </Link>
-                )}
-              </MenuItem>
-              <MenuItem>
-                {" "}
-                {userInfo ?  <Link href={'/'}  >
-                    {" "}
-                    <Typography textAlign="center" onClick={handleLogOut}>Logout</Typography>
-                  </Link>:(
-                  <Link href={"/login"} >
-                    <Typography textAlign="center" onClick={handleCloseNavMenu}>Login</Typography>
-                  </Link>
-                ) }
+              <MenuItem> 
+                <AuthButton />
               </MenuItem>
             </Menu>
           </Box>

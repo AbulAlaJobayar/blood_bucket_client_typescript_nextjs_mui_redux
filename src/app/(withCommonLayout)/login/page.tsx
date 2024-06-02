@@ -1,8 +1,8 @@
-"use client";
+"use client"
 
+import { Box, Button, Container, Grid, Stack, Typography } from "@mui/material";
 import BBForm from "@/components/Form/BBForm";
 import BBInput from "@/components/Form/BBInput";
-import { Box, Button, Container, Grid, Stack, Typography } from "@mui/material";
 import Link from "next/link";
 import { FieldValues } from "react-hook-form";
 import { z } from "zod";
@@ -16,27 +16,25 @@ import { storeUserInfo } from "@/services/authService";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
- const validationSchema = z.object({
+const validationSchema = z.object({
   email: z.string().email("please enter a valid email!"),
   password: z.string().min(5, "password must be at last 5 characters"),
 });
 
 const LoginPage = () => {
-  const [error,setError]=useState()
-  const router=useRouter()
-  const handleLogin = async(data: FieldValues) => {
-    // console.log(data)
+  const [error, setError] = useState();
+
+  const handleLogin = async (values: FieldValues) => {
+    console.log(values)
     try {
-      const res = await userLogin(data);
-      
-      console.log(res);
+      const res = await userLogin(values);
+      console.log(res?.data?.token);
       if (res?.data?.token) {
         storeUserInfo(res?.data?.token);
         toast.success(res.message);
-        router.push("/profile");
-        
+        // router.push("/profile");
       } else {
-        setError(res.message)
+        setError(res.message);
         toast.error(res?.message ? res?.message : "something went wrong");
       }
     } catch (error: any) {
@@ -80,7 +78,7 @@ const LoginPage = () => {
               </Typography>
 
               <Stack direction={"row"} spacing={2} my={2}>
-                <Button
+                <Button disabled
                   onClick={() =>
                     signIn("github", {
                       callbackUrl: "http://localhost:3000/dashboard",
@@ -89,7 +87,7 @@ const LoginPage = () => {
                 >
                   <GitHubIcon />
                 </Button>
-                <Button onClick={() => signIn("google")}>
+                <Button disabled onClick={() => signIn("google")}>
                   <GoogleIcon />
                 </Button>
               </Stack>

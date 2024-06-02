@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import BBForm from "@/components/Form/BBForm";
 import BBInput from "@/components/Form/BBInput";
@@ -18,30 +18,41 @@ import { useRouter } from "next/navigation";
 import { register } from "@/services/action/register";
 import { bloodGroupsType, district } from "@/types";
 import { dateFormatter } from "@/utils/dateFormetter";
+import { registerValidationSchema } from "@/utils/validationSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-// export const validationSchema = z.object({
-//   name:z.string()
-//   email: z.string().email("please enter a valid email!"),
-//   password: z.string().min(6, "password must be at last 6 characters"),
-// });
 interface IFormInput {
   name: string;
   email: string;
   password: string;
-  bloodType: keyof typeof bloodGroupsType; // Ensure bloodGroup matches the keys of bloodGroupMapping
-  location: string[];
+  confirmPassword: string;
+  bloodType: keyof typeof bloodGroupsType;
+  location: string;
   age: string | number;
   bio: string;
-  donateblood:string;
+  donateblood: string;
   lastDonationDate: string | Date | undefined | any;
 }
+const registrationValues = {
+  name: "",
+  email: "",
+  password: "",
+  confirmPassword: "",
+  bloodType: "",
+  location: "",
+  age: "",
+  bio: "",
+  donateblood: "",
+  lastDonationDate: undefined
+};
 
 const RegisterPage = () => {
   const router = useRouter();
-  const handleLogin = async (data: IFormInput) => {
+  const handleRegister = async (data: IFormInput) => {
+  console.log(data)
     data.lastDonationDate = dateFormatter(data.lastDonationDate);
     data.age = Number(data.age);
-    console.log(data.email);
+  
     try {
       const res = await register({
         ...data,
@@ -102,7 +113,7 @@ const RegisterPage = () => {
               </Typography>
 
               <Stack direction={"row"} spacing={2} my={2}>
-                <Button
+                <Button disabled
                   onClick={() =>
                     signIn("github", {
                       callbackUrl: "http://localhost:3000/dashboard",
@@ -111,7 +122,7 @@ const RegisterPage = () => {
                 >
                   <GitHubIcon />
                 </Button>
-                <Button onClick={() => signIn("google")}>
+                <Button disabled onClick={() => signIn("google")}>
                   <GoogleIcon />
                 </Button>
               </Stack>
@@ -124,26 +135,9 @@ const RegisterPage = () => {
 
             <Box>
               <BBForm
-                onSubmit={handleLogin}
-                // resolver={zodResolver(validationSchema)}
-                defaultValues={{
-                 
-                  
-                 
-                  
-                
-                 
-                 
-                  name: "",
-                  email: "",
-                  password: "",
-                  bloodType: "",
-                  location: "",
-                  age: "",
-                  bio:"",
-                  donateblood:"",
-                  lastDonationDate: undefined,
-                }}
+                onSubmit={handleRegister}
+                // resolver={zodResolver(registerValidationSchema)}
+                defaultValues={registrationValues}
               >
                 <Grid container spacing={3} my={1}>
                   <Grid item md={6}>
@@ -165,6 +159,7 @@ const RegisterPage = () => {
                       size="small"
                     />
                   </Grid>
+                  
                   <Grid item md={6}>
                     <BBSelectField
                       items={Object.keys(bloodGroupsType)}
@@ -185,7 +180,7 @@ const RegisterPage = () => {
                   </Grid>
                   <Grid item md={6}>
                     <BBSelectField
-                      items={["Yes","No"]}
+                      items={["Yes", "No"]}
                       name="donateblood"
                       fullWidth
                       label="Donate Blood"

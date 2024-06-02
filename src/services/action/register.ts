@@ -1,26 +1,32 @@
-"use server";
+"use server"
 
 import { FieldValues } from "react-hook-form";
+export const register = async (value: FieldValues) => {
+ 
 
-export const register = async (value:FieldValues) => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/register`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(value),
+        credentials: "include",
+        cache: "no-cache",
+      }
+    );
 
-  const res = await fetch(
-    `https://blood-bucket-five.vercel.app/api/register`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(value),
-      credentials: "include",
-      cache:"no-cache"
+    if (!res.ok) {
+      const errorData = await res.json();
+      throw new Error(errorData.message || "Registration failed");
     }
-    // {
-    //   method: "POST",
-    //   body: ,
-    //   cache:"no-cache"
-    // }
-  );
-  const data = await res.json();
-  return data;
+
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.error("Registration error:", error);
+    
+  }
 };
