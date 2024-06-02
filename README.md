@@ -1,36 +1,63 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Blood-Bucket Website
 
-## Getting Started
+## Table of Contents
 
-First, run the development server:
+- [Introduction](#introduction)
+- [Live URL](#live-url)
+- [Features](#features)
+- [Technology Used](#technology-used)
+- [Setup](#setup)
+- [Usage](#usage)
+- [Contributing](#contributing)
+- [License](#license)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Introduction
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Blood-Bucket is a TypeScript Next.js project designed to facilitate blood donations by connecting donors with recipients. With features like creating and managing blood requests, user authentication, and an admin dashboard for managing site activity, Blood-Bucket aims to streamline the process of blood donation, ensuring that those in need can easily find willing donors and that the donation process is secure, efficient, and user-friendly.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+---
 
-## Learn More
+## Live URL
 
-To learn more about Next.js, take a look at the following resources:
+Visit the live Blood-Bucket application at [Blood-Bucket Live](https://blood-bucket-client.vercel.app).
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Features
 
-## Deploy on Vercel
+- **User Authentication**: Securely manage user access with login and registration.
+- **Search Donors**: Search and filter blood donors by blood type, location, and availability.
+- **Donor Profiles**: View detailed donor profiles with relevant information.
+- **Request Blood**: Initiate blood donation requests with necessary details.
+- **Admin Dashboard**: Manage user accounts, approve/reject blood requests, and oversee site activity.
+- **User Profile Management**: Edit profile information, view blood requests made/received, and manage donation status.
+- **Responsive Design**: Accessible and user-friendly on various devices (desktops, tablets, mobile phones).
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Technology Used
+
+- **Next.js**: A React framework for server-side rendering and static site generation.
+- **TypeScript**: Adds static typing to JavaScript for improved code quality.
+- **Material-UI (MUI)**: A popular React UI framework for building responsive and accessible designs.
+- **Redux**: A predictable state container for JavaScript applications.
+- **Axios**: A promise-based HTTP client for making requests to the server.
+- **Zod**: A TypeScript-first schema declaration and validation library.
+- **React Hook Form**: A performant, flexible, and extensible form library for React.
+
+---
+
+## Setup
+
+Follow these steps to set up the Blood-Bucket project locally:
+
+1. Clone the repository: `git clone [repository-url]`
+2. Navigate to the project directory: `cd blood-bucket`
+3. Install the dependencies: `npm install`
+4. Create a `.env` file in the root of the project.
+5. Add the necessary environment variables to the `.env` file:
+
+```plaintext
+NEXT_PUBLIC_API_URL=your-api-url
