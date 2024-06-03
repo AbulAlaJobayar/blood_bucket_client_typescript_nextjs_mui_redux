@@ -66,10 +66,10 @@ const RegisterPage = () => {
           password: data.password,
           email: data.email,
         });
-        console.log(result.data.token);
+        
         if (result?.data?.token) {
           storeUserInfo(result?.data?.token);
-          router.push("/profile");
+          router.push("/");
         }
       }
     } catch (err: any) {
@@ -141,7 +141,7 @@ const RegisterPage = () => {
               >
                 <Grid container spacing={3} my={1}>
                   <Grid item md={6}>
-                    <BBInput name="name" fullWidth label="Name" size="small" />
+                    <BBInput required name="name" fullWidth label="Name" size="small" />
                   </Grid>
                   <Grid item md={6}>
                     <BBInput
@@ -149,10 +149,12 @@ const RegisterPage = () => {
                       fullWidth
                       label="Email"
                       size="small"
+                      required
                     />
                   </Grid>
                   <Grid item md={6}>
                     <BBInput
+                    required
                       name="password"
                       fullWidth
                       label="Password"
@@ -162,6 +164,7 @@ const RegisterPage = () => {
                   
                   <Grid item md={6}>
                     <BBSelectField
+                    required
                       items={Object.keys(bloodGroupsType)}
                       name="bloodType"
                       fullWidth
@@ -171,6 +174,7 @@ const RegisterPage = () => {
                   </Grid>
                   <Grid item md={6}>
                     <BBSelectField
+                    required
                       items={district}
                       name="location"
                       fullWidth
@@ -180,6 +184,7 @@ const RegisterPage = () => {
                   </Grid>
                   <Grid item md={6}>
                     <BBSelectField
+                    required
                       items={["Yes", "No"]}
                       name="donateblood"
                       fullWidth
@@ -188,13 +193,14 @@ const RegisterPage = () => {
                     />
                   </Grid>
                   <Grid item md={6}>
-                    <BBInput name="age" fullWidth label="Age" size="small" />
+                    <BBInput required name="age" fullWidth label="Age" size="small" />
                   </Grid>
                   <Grid item md={6}>
-                    <BBInput name="bio" fullWidth label="Bio" size="small" />
+                    <BBInput required name="bio" fullWidth label="Bio" size="small" />
                   </Grid>
                   <Grid item md={6}>
                     <BBDatePicker
+                    required
                       name="lastDonationDate"
                       fullWidth
                       label="Last Donation Date"
