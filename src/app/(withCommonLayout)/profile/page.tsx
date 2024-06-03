@@ -20,6 +20,7 @@ import { FieldValues } from "react-hook-form";
 import MyBloodRequestPage from "./MyBloodRequest";
 import RequestToMePage from "./RequestToMe";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 interface IFormInput {
   name: string;
@@ -34,7 +35,7 @@ interface IFormInput {
 
 const ProfilePage = () => {
   const { data: me, isLoading } = useGetMeQuery("");
-
+const router=useRouter()
   const [updateByMe] = useUpdateByMeMutation();
   const handleUpdate = async (data: IFormInput) => {
     console.log(data) 
@@ -49,6 +50,7 @@ const ProfilePage = () => {
       console.log(res)
     if(res){
       toast.success(res.data.message)
+      router.refresh()
     }
     } catch (error) {
       console.log(error)
