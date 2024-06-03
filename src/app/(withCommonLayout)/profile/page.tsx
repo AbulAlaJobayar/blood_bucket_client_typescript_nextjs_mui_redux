@@ -19,6 +19,7 @@ import Link from "next/link";
 import { FieldValues } from "react-hook-form";
 import MyBloodRequestPage from "./MyBloodRequest";
 import RequestToMePage from "./RequestToMe";
+import { toast } from "sonner";
 
 interface IFormInput {
   name: string;
@@ -27,6 +28,7 @@ interface IFormInput {
   bio: string;
   age: string | number;
   donateblood: string;
+  availability:string;
   lastDonationDate: string | Date | undefined | any;
 }
 
@@ -35,20 +37,27 @@ const ProfilePage = () => {
 
   const [updateByMe] = useUpdateByMeMutation();
   const handleUpdate = async (data: IFormInput) => {
+    console.log(data) 
     data.lastDonationDate = dateFormatter(data.lastDonationDate);
     data.age = Number(data.age);
+    console.log({data})
     try {
       const res = await updateByMe({
         ...data,
         bloodType: bloodGroupsType[data.bloodType],
       });
-      console.log(res);
-    } catch (error) {}
+      console.log(res)
+    if(res){
+      toast.success(res.data.message)
+    }
+    } catch (error) {
+      console.log(error)
+    }
   };
   if (isLoading) {
     return <>loading...........</>;
   }
-  console.log(me?.data?.location);
+
   return (
     <Box>
       <Box
@@ -82,6 +91,9 @@ const ProfilePage = () => {
                 donateblood: me?.data?.userProfile?.donateblood || "",
                 age: me?.data?.userProfile?.age || "",
                 bio: me?.data?.userProfile?.bio || "",
+                availability: me?.data?.availability === false ? "false" 
+                : me?.data?.availability === true ? "true" 
+                : "",
                 lastDonationDate: undefined,
               }}
             >
@@ -121,6 +133,15 @@ const ProfilePage = () => {
                 </Grid>
                 <Grid item md={6}>
                   <BBInput name="bio" fullWidth label="Bio" size="small" />
+                </Grid>
+                <Grid item md={6}>
+                  <BBSelectField
+                    items={["true", "false"]}
+                    name="availability"
+                    fullWidth
+                    label="Availability"
+                    size="small"
+                  />
                 </Grid>
                 <Grid item md={6}>
                   <BBDatePicker

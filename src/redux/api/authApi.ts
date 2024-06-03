@@ -16,7 +16,7 @@ const authApi = baseApi.injectEndpoints({
         method: "PUT",
         data,
       }),
-      invalidatesTags: [tagType.auth],
+      invalidatesTags: [tagType.auth, tagType.donor, tagType.request],
     }),
     updateByAdmin: build.mutation({
       query: ({ id, status }) => ({
