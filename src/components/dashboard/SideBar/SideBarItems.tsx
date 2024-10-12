@@ -9,7 +9,6 @@ type TProps = {
   item: DrawerItem;
 };
 
-
 import { usePathname } from "next/navigation";
 import { DrawerItem } from "@/types";
 const SideBarItems = ({ item }: TProps) => {
@@ -22,8 +21,8 @@ const SideBarItems = ({ item }: TProps) => {
         sx={{
           ...(pathName === linkPath
             ? {
-                borderRight: "3px solid #1584FD",
-                "& svg": { color: "#1584FD" },
+                borderRight: "3px solid #EB2C29",
+                "& svg": { color: "#EB2C29" },
               }
             : {}),
           mb: 1,
@@ -31,7 +30,7 @@ const SideBarItems = ({ item }: TProps) => {
       >
         <ListItemButton>
           <ListItemIcon>{item.icon && <item.icon />}</ListItemIcon>
-          <ListItemText primary={item.title} />
+          <ListItem primary={item.title} />
         </ListItemButton>
       </ListItem>
     </Link>

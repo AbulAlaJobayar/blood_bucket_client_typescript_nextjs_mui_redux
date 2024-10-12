@@ -10,13 +10,12 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import SideBar from "../SideBar/SideBar";
-import { StayPrimaryLandscape } from "@mui/icons-material";
-// import { useGetSingleUserQuery } from "@/redux/api/userApi";
+import SideBar from "../SideBar/SideBar"
 import { Avatar, Badge, Stack } from "@mui/material";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import AccountMenu from "../AccountMenu/AccountMenu";
-// import AccountMenu from "../AccountMenu/AccountMenu";
+import { useGetMeQuery } from "@/redux/api/authApi";
+;
 const drawerWidth = 240;
 
 export default function DashboardDrawer({
@@ -27,7 +26,8 @@ export default function DashboardDrawer({
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [isClosing, setIsClosing] = React.useState(false);
 //   const { data, isLoading } = useGetSingleUserQuery("");
-//   console.log(data);
+const { data: me, isLoading } = useGetMeQuery("");
+
 
   const handleDrawerClose = () => {
     setIsClosing(true);
@@ -77,7 +77,7 @@ export default function DashboardDrawer({
           >
             <Box>
               <Typography variant="body2" noWrap component="div" color="gray">
-                jobayar{/* Hi, {isLoading ? "Loading..." : data?.name}, */}
+                Hi, {isLoading ? "Loading..." : me?.data?.name},
               </Typography>
               <Typography
                 variant="body2"

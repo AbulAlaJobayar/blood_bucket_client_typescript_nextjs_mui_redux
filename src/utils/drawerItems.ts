@@ -10,11 +10,7 @@ import { USER_ROLE } from "@/constant/role";
 export const drawerItems = (role: userRole): DrawerItem[] => {
   const roleMenus: DrawerItem[] = [];
   const defaultMenu = [
-    {
-      title: "Dashboard",
-      path: `/`,
-      icon: DashboardIcon,
-    },
+    
     {
       title: "My Blood Request",
       path: `mybloodrequests`,
@@ -38,10 +34,24 @@ export const drawerItems = (role: userRole): DrawerItem[] => {
   ];
   switch (role) {
     case USER_ROLE.ADMIN:
+      roleMenus.push(
+        {
+          title: "Dashboard",
+          path: `/`,
+          icon: DashboardIcon,
+        },
+        {
+          title: "Manage Users",
+          path: `manage-users`,
+          icon: CalendarMonthIcon,
+        }
+      );
+      break;
+    case USER_ROLE.USER:
       roleMenus.push({
-        title: "Manage Users",
-        path: `manage-users`,
-        icon: CalendarMonthIcon,
+        title: "Dashboard",
+        path: `/`,
+        icon: DashboardIcon,
       });
       break;
     default:
