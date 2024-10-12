@@ -11,6 +11,8 @@ import Tooltip from "@mui/material/Tooltip";
 import Logout from "@mui/icons-material/Logout";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { useRouter } from "next/navigation";
+import { logoutUser } from "@/services/action/logoutUser";
+import { toast } from "sonner";
 
 const menuStyles = {
   paper: {
@@ -52,8 +54,8 @@ export default function AccountMenu() {
   };
   const handleLogout = () => {
     setAnchorEl(null);
-    localStorage.removeItem("accessToken");
-    router.push("/login");
+    logoutUser(router);
+    toast.success("LogOut Successfully");
   };
 
   return (
@@ -99,12 +101,7 @@ export default function AccountMenu() {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <MenuItem onClick={handleClose}>
-          <Avatar sx={{ background: "transparent", color: "primary.main" }} />
-          Profile
-        </MenuItem>
-
-        <Divider />
+        
 
         <MenuItem onClick={handleLogout}>
           <ListItemIcon>

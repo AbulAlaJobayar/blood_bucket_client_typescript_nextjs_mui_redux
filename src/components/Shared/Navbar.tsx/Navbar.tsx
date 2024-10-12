@@ -211,13 +211,7 @@ const Navbar = () => {
                   </Link>
                 </MenuItem>
               )}
-              <MenuItem>
-                <Link href={"/profile"}>
-                  <Typography textAlign="center" onClick={handleCloseNavMenu}>
-                    Profile
-                  </Typography>
-                </Link>
-              </MenuItem>
+             
               <MenuItem> 
                 <AuthButton />
               </MenuItem>

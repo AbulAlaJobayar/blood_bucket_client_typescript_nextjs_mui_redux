@@ -1,223 +1,237 @@
-"use client";
+"use client"
+import BBDatePicker from "@/components/Form/BBDatePicker";
+import BBForm from "@/components/Form/BBForm";
+import BBInput from "@/components/Form/BBInput";
+import BBSelectField from "@/components/Form/BBSelectField";
+import { useGetMeQuery, useUpdateByMeMutation } from "@/redux/api/authApi";
+import { bloodGroupsType, district, formatBloodType } from "@/types";
+import { dateFormatter } from "@/utils/dateFormetter";
+import {
+  Avatar,
+  Box,
+  Button,
+  CircularProgress,
+  Container,
+  Divider,
+  Grid,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 
-import useUserInfo from "@/hooks/useUserInfo";
-import { useUpdateByAdminMutation } from "@/redux/api/authApi";
-import { useGetAllUsersQuery } from "@/redux/api/donorApi";
-import { useUpdateRequestStatesMutation } from "@/redux/api/requestApi";
-import { formatBloodType } from "@/types";
-import { Box, Button, Container, Stack, Typography } from "@mui/material";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { useRouter } from "next/navigation";
 
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
-const AdminDashboardPage = () => {
-  const userInfo = useUserInfo();
-  console.log(userInfo.role);
-  const { data: getAllUsers, isLoading } = useGetAllUsersQuery({});
-  const [updateByAdmin] = useUpdateByAdminMutation();
-  console.log(getAllUsers);
+interface IFormInput {
+  name: string;
+  bloodType: keyof typeof bloodGroupsType; // Ensure bloodGroup matches the keys of bloodGroupMapping
+  location: string[];
+  bio: string;
+  age: string | number;
+  donateblood: string;
+  availability: string;
+  lastDonationDate: string | Date | undefined | any;
+}
+const ProfilePage = () => {
+  const { data: me, isLoading } = useGetMeQuery("");
   const router = useRouter();
-  const handleStatusChanged = async ({
-    id,
-    status,
-  }: {
-    id: string;
-    status: any;
-  }) => {
-    const payload = {
-      id: id,
-      status: status,
-    };
-    console.log(payload);
+  const [updateByMe] = useUpdateByMeMutation();
+  const handleUpdate = async (data: IFormInput) => {
+    console.log(data);
+    data.lastDonationDate = dateFormatter(data.lastDonationDate);
+    data.age = Number(data.age);
+    console.log({ data });
     try {
-      if (userInfo.role !== "admin") {
-        toast.error("you are not authorized Admin");
-        return 
-      }
-      const res = await updateByAdmin(payload).unwrap();
-      console.log(res.data);
-      if (res?.data?.id) {
-        toast.success("Status Changed Successfully");
-      } else {
-        toast.error("Status Changed Unsuccessful");
+      const res = await updateByMe({
+        ...data,
+        bloodType: bloodGroupsType[data.bloodType],
+      });
+      console.log(res);
+      if (res) {
+        toast.success(res.data.message);
+        router.refresh();
       }
     } catch (error) {
       console.log(error);
     }
   };
-
-  const columns: GridColDef[] = [
-    {
-      field: "name",
-      headerName: "Name",
-      flex: 1,
-      renderCell: ({ row }) => row?.name,
-    },
-    {
-      field: "email",
-      headerName: "Email",
-      flex: 1,
-      renderCell: ({ row }) => row?.email,
-    },
-    {
-      field: "blood",
-      headerName: "Blood ",
-      flex: 1,
-      renderCell: ({ row }) => {
-        return formatBloodType(row?.bloodType);
-      },
-    },
-
-    {
-      field: "role",
-      headerName: "User Role",
-      flex: 1,
-      renderCell: ({ row }) => row?.role,
-    },
-    {
-      field: "changeAccountStatus",
-      headerName: "User Account Status",
-      flex: 1,
-      renderCell: ({ row }) => row?.accountStatus,
-    },
-    {
-      field: "location",
-      headerName: " Location",
-      flex: 1,
-      renderCell: ({ row }) => row?.location,
-    },
-
-    {
-      field: "action",
-      headerName: "change Role",
-      flex: 2,
-      headerAlign: "center",
-      align: "center",
-      renderCell: ({ row }) => {
-        return (
-          <Stack direction={"row"} spacing={2}>
-            <Button
-              sx={{
-                backgroundColor: "green",
-                color: "white",
-                "&:hover": {
-                  backgroundColor: "darkgreen",
-                },
-              }}
-              disabled={row?.role === "admin" ||row.id===userInfo.id}
-              onClick={() =>
-                handleStatusChanged({ id: row.id, status: { role: "admin" } })
-              }
-            >
-              Admin
-            </Button>
-            <Button
-              sx={{
-                backgroundColor: "red",
-                color: "white",
-                "&:hover": {
-                  backgroundColor: "darkred",
-                },
-              }}
-              disabled={row?.role === "user" || row.id===userInfo.id}
-              onClick={() =>
-                handleStatusChanged({ id: row.id, status: { role: "user" } })
-              }
-            >
-              User
-            </Button>
-          </Stack>
-        );
-      },
-    },
-    {
-      field: "accountStatus",
-      headerName: "Account Status",
-      flex: 2,
-      headerAlign: "center",
-      align: "center",
-      renderCell: ({ row }) => {
-        return (
-          <Stack direction={"row"} spacing={2}>
-            <Button
-              sx={{
-                backgroundColor: "green",
-                color: "white",
-                "&:hover": {
-                  backgroundColor: "darkgreen",
-                },
-              }}
-              disabled={row?.accountStatus === "activate" || row.id===userInfo.id}
-              onClick={() =>
-                handleStatusChanged({
-                  id: row.id,
-                  status: { accountStatus: "activate" },
-                })
-              }
-            >
-              Activate
-            </Button>
-
-            <Button
-              sx={{
-                backgroundColor: "red",
-                color: "white",
-                "&:hover": {
-                  backgroundColor: "darkred",
-                },
-              }}
-              disabled={row?.accountStatus === "deActivate" ||row.id===userInfo.id}
-              onClick={() =>
-                handleStatusChanged({
-                  id: row.id,
-                  status: { accountStatus: "deActivate" },
-                })
-              }
-            >
-              Deactivate
-            </Button>
-          </Stack>
-        );
-      },
-    },
-  ];
+  if (isLoading) {
+    return <Box
+    sx={{
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      backgroundColor: 'rgba(255, 255, 255, 0.5)', // Optional overlay
+      zIndex: 10, // Make sure it's on top of other content
+    }}
+  >
+    <CircularProgress />
+  </Box>;
+  }
 
   return (
-    <Box>
-      <Box
-        bgcolor={"#FCE0DF"}
-        sx={{ clipPath: "polygon(100% 0, 100% 100%, 28% 76%, 0 100%, 0 0)" }}
-      >
-        <Container>
-          <Box py={10}>
-            <Typography variant="h4" fontWeight={700}>
-              Admin Dashboard
+    <Container maxWidth="lg" sx={{ mt: 5 }}>
+      <Grid container spacing={4}>
+        {/* Left Side: Profile Info */}
+        <Grid item xs={12} md={4}>
+          <Box
+            sx={{
+              borderRadius: "8px",
+              boxShadow: "0px 0px 15px rgba(0,0,0,0.1)",
+              padding: 4,
+              textAlign: "center",
+            }}
+          >
+            <Avatar
+              //   src={newProfilePicture ? URL.createObjectURL(newProfilePicture) : user.profilePicture}
+              sx={{ width: 150, height: 150, margin: "0 auto", mb: 3 }}
+            />
+            <Typography variant="h6" fontWeight="bold">
+             {me?.data?.name}
             </Typography>
-            <Typography fontWeight={400}>
-              Update And Maintain user Profile
-            </Typography>
+            <Typography variant="body1">Email: {me?.data?.email}</Typography>
+            <Typography variant="body1">Blood Type: {formatBloodType(me?.data?.bloodType)}</Typography>
+            <Typography variant="body1">Location: {me?.data?.location}</Typography>
+            <Typography variant="body1">Age: {me?.data?.userProfile?.age}</Typography>
+            <Typography variant="body1">Bio: {me?.data?.userProfile?.bio}</Typography>
+            <Typography variant="body1">Last Donation Date: {me?.data?.userProfile?.lastDonationDate}</Typography>
+            
           </Box>
-        </Container>
-      </Box>
-      <Container>
-        <Box my={5}>
-          {!isLoading ? (
-            <Box my={2}>
-              <DataGrid
-                rows={userInfo.role=="admin"?getAllUsers?.data ?? []: []}
-                columns={columns}
-                loading={isLoading}
-                hideFooter
-              />
-            </Box>
-          ) : (
-            <h1>Loading.....</h1>
-          )}
-        </Box>
-      </Container>
-    </Box>
+        </Grid>
+
+        {/* Right Side: Profile Update Form */}
+        <Grid item xs={12} md={8}>
+          <Box
+            sx={{
+              borderRadius: "8px",
+              boxShadow: "0px 0px 15px rgba(0,0,0,0.1)",
+              padding: 4,
+            }}
+          >
+            {/* Update Form Fields */}
+
+            <Container>
+              <Box my={7}>
+                <Typography variant="h6" fontWeight="bold" sx={{ mb: 3 }}>
+                  Update Profile
+                </Typography>
+                <Box>
+                  <BBForm
+                    onSubmit={handleUpdate}
+                    // resolver={zodResolver(validationSchema)}
+                    defaultValues={{
+                      name: me?.data?.name,
+                      bloodType: formatBloodType(me?.data?.bloodType) || "",
+                      location: me?.data?.location || "",
+                      donateblood: me?.data?.userProfile?.donateblood || "",
+                      age: me?.data?.userProfile?.age || "",
+                      bio: me?.data?.userProfile?.bio || "",
+                      availability:
+                        me?.data?.availability === false
+                          ? "false"
+                          : me?.data?.availability === true
+                          ? "true"
+                          : "",
+                      lastDonationDate: undefined,
+                    }}
+                  >
+                    <Grid container spacing={3} my={1}>
+                      <Grid item md={6}>
+                        <BBInput
+                          name="name"
+                          fullWidth
+                          label="Name"
+                          size="small"
+                        />
+                      </Grid>
+                      <Grid item md={6}>
+                        <BBSelectField
+                          items={Object.keys(bloodGroupsType)}
+                          name="bloodType"
+                          fullWidth
+                          label="BloodType"
+                          size="small"
+                        />
+                      </Grid>
+                      <Grid item md={6}>
+                        <BBSelectField
+                          items={district}
+                          name="location"
+                          fullWidth
+                          label="Location"
+                          size="small"
+                        />
+                      </Grid>
+                      <Grid item md={6}>
+                        <BBSelectField
+                          items={["Yes", "No"]}
+                          name="donateblood"
+                          fullWidth
+                          label="Donate Blood"
+                          size="small"
+                        />
+                      </Grid>
+                      <Grid item md={6}>
+                        <BBInput
+                          name="age"
+                          fullWidth
+                          label="Age"
+                          size="small"
+                        />
+                      </Grid>
+                      <Grid item md={6}>
+                        <BBInput
+                          name="bio"
+                          fullWidth
+                          label="Bio"
+                          size="small"
+                        />
+                      </Grid>
+                      <Grid item md={6}>
+                        <BBSelectField
+                          items={["true", "false"]}
+                          name="availability"
+                          fullWidth
+                          label="Availability"
+                          size="small"
+                        />
+                      </Grid>
+                      <Grid item md={6}>
+                        <BBDatePicker
+                          name="lastDonationDate"
+                          fullWidth
+                          label="Last Donation Date"
+                          size="small"
+                        />
+                      </Grid>
+                    </Grid>
+
+                    <Button
+                      type="submit"
+                      fullWidth
+                      sx={{
+                        margin: "10px 0px",
+                      }}
+                    >
+                      Update
+                    </Button>
+                  </BBForm>
+                </Box>
+              </Box>
+            </Container>
+
+            {/* Update Form Fields End */}
+          </Box>
+        </Grid>
+      </Grid>
+    </Container>
   );
 };
 
-export default AdminDashboardPage;
+export default ProfilePage;

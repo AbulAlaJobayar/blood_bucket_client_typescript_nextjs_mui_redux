@@ -22,11 +22,6 @@ export const drawerItems = (role: userRole): DrawerItem[] => {
       icon: MedicalInformationIcon,
     },
     {
-      title: "Profile",
-      path: `profile`,
-      icon: PersonOutlineIcon,
-    },
-    {
       title: "ChangePassword",
       path: `change-password`,
       icon: KeyIcon,
@@ -37,7 +32,7 @@ export const drawerItems = (role: userRole): DrawerItem[] => {
       roleMenus.push(
         {
           title: "Dashboard",
-          path: `/`,
+          path: ``,
           icon: DashboardIcon,
         },
         {

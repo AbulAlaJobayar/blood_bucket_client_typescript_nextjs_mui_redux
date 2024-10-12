@@ -37,7 +37,7 @@ const ChangePasswordPage = () => {
       const res = await ChangePassword(inputValues).unwrap();
       if (res?.statusCode === 200) {
         toast.success(res.message);
-        router.push("/profile")
+        router.push("/dashboard")
       } else {
         toast.error(res.message);
       }

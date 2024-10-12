@@ -21,6 +21,7 @@ const SideBarItems = ({ item }: TProps) => {
         sx={{
           ...(pathName === linkPath
             ? {
+                color: "#EB2C29",
                 borderRight: "3px solid #EB2C29",
                 "& svg": { color: "#EB2C29" },
               }
@@ -30,7 +31,7 @@ const SideBarItems = ({ item }: TProps) => {
       >
         <ListItemButton>
           <ListItemIcon>{item.icon && <item.icon />}</ListItemIcon>
-          <ListItem primary={item.title} />
+          <ListItemText  primary={item.title} />
         </ListItemButton>
       </ListItem>
     </Link>

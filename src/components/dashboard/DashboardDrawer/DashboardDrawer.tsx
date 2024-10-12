@@ -89,12 +89,12 @@ const { data: me, isLoading } = useGetMeQuery("");
               </Typography>
             </Box>
 
-            <Stack direction="row" gap={3}>
-              <Badge badgeContent={1} color="primary">
-                <IconButton sx={{ background: "#ffffff" }}>
-                  <NotificationsNoneIcon color="action" />
-                </IconButton>
-              </Badge>
+           <Stack direction="row" gap={3}>
+              {/* // <Badge badgeContent={1} color="primary">
+              //   <IconButton sx={{ background: "#ffffff" }}>
+              //     <NotificationsNoneIcon color="action" />
+              //   </IconButton>
+              // </Badge> */}
               <AccountMenu />
             </Stack>
           </Box>
