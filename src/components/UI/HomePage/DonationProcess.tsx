@@ -2,7 +2,7 @@ import { Box, Container, Stack, Typography } from "@mui/material";
 
 const DonationProcess = () => {
   return (
-    <Box my={10}>
+    <Box mt={10} py={8} bgcolor={'#FCE0DF'}>
       <Container>
         <Stack direction={"column"} spacing={2} my={5}>
           <Typography variant="h4" fontWeight={700}>

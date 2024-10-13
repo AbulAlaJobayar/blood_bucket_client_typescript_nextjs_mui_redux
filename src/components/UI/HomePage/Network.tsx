@@ -4,7 +4,7 @@ import RoomIcon from '@mui/icons-material/Room';
 import WorkspacesIcon from '@mui/icons-material/Workspaces';
 const Network = () => {
   return (
-    <Box my={15}>
+    <Box my={5} py={10} bgcolor={"#FCE0DF"}>
       <Container>
         <Stack direction={"column"} spacing={2} my={5}>
           <Typography variant="h4" fontWeight={700}>

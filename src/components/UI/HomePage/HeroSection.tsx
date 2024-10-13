@@ -19,18 +19,30 @@ const HeroSection = () => {
               fontWeight={700}
               my={3}
               component={motion.div}
-              initial={{scaleX:1}}
-              animate={{scaleX:0, transition}}
+              initial={{ y: 100, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{duration: 1 }}
+            
             >
               Urgent Blood & Platelet Shortage Alert!
             </Typography>
-            <Typography variant="h5" fontWeight={500}>
+            <Typography variant="h5" fontWeight={500}
+            component={motion.div}
+            initial={{ y: 100, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{delay: 0.5, duration: 1 }}
+          >
               We face a critical need for donors right now. By donating blood by
               8/31, you&apos;ll be making a life-saving difference. Your
               generosity today can save lives tomorrow. Please step up and
               donate!
             </Typography>
-            <Stack direction={"row"} gap={3} my={3}>
+            <Stack direction={"row"} gap={3} my={3}
+            component={motion.div}
+            initial={{ y: 100, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay:1,duration: 1 }}
+            >
               <Link href={"/register"}>
                 {" "}
                 <Button> Join as a Donar</Button>

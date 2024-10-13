@@ -15,7 +15,7 @@ const SearchDonors = () => {
     router.push(`/searchdonors?${queryString}`);
   };
   return (
-    <Box my={15} py={10} bgcolor={"#FAFAFA"}>
+    <Box my={5} py={10} >
       <Container>
         <Stack direction={"column"} spacing={2} my={5}>
           <Typography variant="h4" fontWeight={700}>

@@ -5,7 +5,7 @@ import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
 const AboutUs = () => {
   return (
     <Box
-      my={15}
+      mt={5}
       bgcolor={"primary.main"}
       width={"95%"}
       sx={{
