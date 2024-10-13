@@ -4,7 +4,6 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import MedicalInformationIcon from "@mui/icons-material/MedicalInformation";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import TryIcon from "@mui/icons-material/Try";
-import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import KeyIcon from "@mui/icons-material/Key";
 import { USER_ROLE } from "@/constant/role";
 export const drawerItems = (role: userRole): DrawerItem[] => {
@@ -32,7 +31,7 @@ export const drawerItems = (role: userRole): DrawerItem[] => {
       roleMenus.push(
         {
           title: "Dashboard",
-          path: ``,
+          path: `/`,
           icon: DashboardIcon,
         },
         {

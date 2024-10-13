@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { Box, Button, Container, Grid, Stack, Typography } from "@mui/material";
 import BBForm from "@/components/Form/BBForm";
@@ -15,6 +15,7 @@ import { userLogin } from "@/services/action/userLogin";
 import { storeUserInfo } from "@/services/authService";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import Marquee from "react-fast-marquee";
 
 const validationSchema = z.object({
   email: z.string().email("please enter a valid email!"),
@@ -25,14 +26,13 @@ const LoginPage = () => {
   const [error, setError] = useState();
 
   const handleLogin = async (values: FieldValues) => {
-    console.log(values)
+    console.log(values);
     try {
       const res = await userLogin(values);
       console.log(res?.data?.token);
       if (res?.data?.token) {
         storeUserInfo(res?.data?.token);
         toast.success(res.message);
-      
       } else {
         setError(res.message);
         toast.error(res?.message ? res?.message : "something went wrong");
@@ -74,10 +74,17 @@ const LoginPage = () => {
                 Login with
               </Typography>
               <Typography variant="h4" fontWeight={700}>
-                Social Platforms
+                Credential
               </Typography>
+             <Box mt={5} maxWidth={'500px'}>
+             <Marquee >
+                ...... Login Credential:user
+                (Email:user@gmail.com,password:user123456); admin:
+                (email:admin@gmail.com,password:admin123456)....
+              </Marquee>
 
-              <Stack direction={"row"} spacing={2} my={2}>
+             </Box>
+              {/* <Stack direction={"row"} spacing={2} my={2}>
                 <Button disabled
                   onClick={() =>
                     signIn("github", {
@@ -90,7 +97,7 @@ const LoginPage = () => {
                 <Button disabled onClick={() => signIn("google")}>
                   <GoogleIcon />
                 </Button>
-              </Stack>
+              </Stack> */}
             </Box>
           </Box>
           <Box sx={{ flex: 1 }}>

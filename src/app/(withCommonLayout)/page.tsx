@@ -9,6 +9,7 @@ const HomePage = () => {
   return (
     <>
       <HeroSection />
+      {/* <CardSection/> */}
       <CardSection/>
       <AboutUs />
       <DonationProcess/>

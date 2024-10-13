@@ -1,3 +1,4 @@
+"use client"
 import * as React from "react";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
@@ -11,7 +12,7 @@ import laptop from "@/assets/laptop.webp";
 import women from "@/assets/woomen.webp";
 import Link from "next/link";
 import { motion } from "framer-motion";
-export default function CardSection() {
+const CardSection=()=> {
   const cardData = [
     {
       image: laptop,
@@ -82,3 +83,4 @@ export default function CardSection() {
     </Box>
   );
 }
+export default  CardSection
