@@ -198,7 +198,7 @@ const Navbar = () => {
               open={Boolean(user)}
               onClose={handleCloseUserMenu}
             >
-              {userInfo?.role === "admin" && (
+              {userInfo?.role === "admin" || userInfo?.role === "user"&& (
                 <MenuItem>
                   {" "}
                   <Link href={"/dashboard"}>

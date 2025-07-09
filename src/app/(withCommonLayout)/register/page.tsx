@@ -25,7 +25,6 @@ interface IFormInput {
   name: string;
   email: string;
   password: string;
-  confirmPassword: string;
   bloodType: keyof typeof bloodGroupsType;
   location: string;
   age: string | number;
@@ -37,7 +36,6 @@ const registrationValues = {
   name: "",
   email: "",
   password: "",
-  confirmPassword: "",
   bloodType: "",
   location: "",
   age: "",
@@ -69,7 +67,7 @@ const RegisterPage = () => {
         
         if (result?.data?.token) {
           storeUserInfo(result?.data?.token);
-          router.push("/");
+          router.push("/dashboard");
         }
       }
     } catch (err: any) {

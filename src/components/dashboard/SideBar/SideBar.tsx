@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import SideBarItems from "./SideBarItems";
 import { drawerItems } from "@/utils/drawerItems";
 import { userRole } from "@/types";
+import Link from "next/link";
 
 const SideBar = () => {
   const [userRole, setUserRole] = useState("");
@@ -16,7 +17,7 @@ const SideBar = () => {
   }, []);
 
   return (
-    <Box >
+    <Box>
       <Stack
         direction={"row"}
         alignItems={"center"}
@@ -25,9 +26,8 @@ const SideBar = () => {
         py={1}
         mt={1}
       >
-        
         <Typography variant="h6" component="h1">
-         Blood Bucket
+          <Link href="/">Blood Bucket</Link>
         </Typography>
       </Stack>
       <List>
